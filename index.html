@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Retro 90's Photobooth (3s Timer)</title>
+    <title>Retro Pink Blue Photobooth</title>
     <style>
+        /* ========================================================
+           TEMA WARNA RETRO BIRU PINK (VAPORWAVE / Y2K AESTHETIC)
+           ======================================================== */
         :root {
-            --bg-gradient: linear-gradient(135deg, #ff9f43 0%, #ff5252 100%);
-            --btn-primary: #ff5252;
-            --btn-secondary: #feca57;
-            --btn-accent: #ff9f43;
+            --bg-gradient: linear-gradient(135deg, #00f5d4 0%, #00bbf9 40%, #ff007f 100%);
+            --btn-pink: #ff007f;
+            --btn-blue: #00bbf9;
+            --dark-retro: #1e1e24;
+            --frame-bg: #ffffff; /* Tetap putih mempertahankan ala polaroid */
         }
 
         * {
@@ -19,29 +23,30 @@
         }
 
         body {
-            font-family: 'Poppins', 'Segoe UI', sans-serif;
+            font-family: 'Impact', 'Arial Black', 'Poppins', sans-serif;
             background: var(--bg-gradient);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 15px;
-            color: #333;
+            padding: 20px;
+            color: #fff;
         }
 
         h1 {
             color: #fff;
-            text-shadow: 3px 3px 0px #333;
-            margin: 15px 0;
-            font-size: 2rem;
+            text-shadow: 4px 4px 0px var(--btn-pink), -2px -2px 0px var(--btn-blue);
+            margin-bottom: 25px;
+            font-size: 2.5rem;
             text-align: center;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            font-style: italic;
         }
 
         .container {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 20px;
+            gap: 25px;
             width: 100%;
             max-width: 850px;
             justify-items: center;
@@ -51,19 +56,19 @@
         @media (min-width: 768px) {
             .container {
                 grid-template-columns: 1.2fr 0.8fr;
-                gap: 30px;
+                gap: 40px;
             }
         }
 
-        /* Kamera Box */
+        /* Area Kamera & Kontrol Retro */
         .camera-box {
-            background: rgba(255, 255, 255, 0.95);
-            border: 4px solid #333;
-            border-radius: 24px;
+            background: rgba(30, 30, 36, 0.9);
+            border: 4px solid #fff;
+            border-radius: 0px; /* Sudut tajam khas retro PC */
             padding: 20px;
             width: 100%;
             max-width: 440px;
-            box-shadow: 8px 8px 0px #333;
+            box-shadow: 10px 10px 0px var(--btn-pink);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -74,10 +79,9 @@
             width: 100%;
             position: relative;
             aspect-ratio: 4/3;
-            background-color: #222;
-            border-radius: 16px;
+            background-color: #000;
+            border: 3px solid var(--btn-blue);
             overflow: hidden;
-            border: 3px solid #333;
         }
 
         #video {
@@ -85,24 +89,80 @@
             height: 100%;
             object-fit: cover;
             transform: scaleX(-1);
+            transition: filter 0.3s ease;
         }
+
+        /* Navigasi Pilihan Filter Warna Retro */
+        .filter-selector {
+            width: 100%;
+            margin: 15px 0 5px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .filter-label {
+            font-size: 13px;
+            font-weight: bold;
+            color: var(--btn-blue);
+            text-shadow: 1px 1px 0px #000;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .filter-options {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            width: 100%;
+            padding-bottom: 5px;
+        }
+
+        .filter-btn {
+            padding: 6px 14px;
+            font-size: 12px;
+            font-family: 'Segoe UI', sans-serif;
+            background: #2f2f38;
+            border: 2px solid var(--btn-blue);
+            color: #fff;
+            border-radius: 0px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn.active {
+            background: var(--btn-pink);
+            border-color: #fff;
+            font-weight: bold;
+            box-shadow: 3px 3px 0px var(--btn-blue);
+            transform: translate(-2px, -2px);
+        }
+
+        /* Filter Efek Gambar */
+        .f-normal { filter: none; }
+        .f-bw { filter: grayscale(100%) contrast(120%); }
+        .f-sepia { filter: sepia(100%) hue-rotate(-30deg); }
+        .f-vintage { filter: sepia(30%) contrast(130%) saturate(140%); }
+        .f-cyber { filter: hue-rotate(140deg) saturate(180%) contrast(120%); }
 
         #timer {
             position: absolute;
-            top: 50%;
+            top: 40%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 80px;
+            font-size: 90px;
             font-weight: 900;
             color: #fff;
-            text-shadow: 0 0 20px rgba(0,0,0,0.6), 4px 4px 0px var(--btn-primary);
+            text-shadow: 4px 4px 0px var(--btn-pink);
             pointer-events: none;
             z-index: 10;
         }
 
         .flash-overlay {
             position: absolute;
-            top:0; left:0; width:100%; height:100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
             z-index: 5;
         }
@@ -116,87 +176,79 @@
             100% { background: rgba(255,255,255,0); }
         }
 
+        /* Desain Tombol-Tombol Blocky Retro */
         .controls {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
             width: 100%;
-            margin-top: 15px;
+            margin-top: 10px;
         }
 
         .btn-group {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             width: 100%;
         }
 
-        button {
+        button.main-btn {
             padding: 12px 15px;
             font-size: 14px;
-            font-weight: bold;
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            letter-spacing: 1px;
             text-transform: uppercase;
-            border: 3px solid #333;
-            border-radius: 12px;
+            border: 3px solid #fff;
+            border-radius: 0px; /* Kotak kaku khas 90s game */
             cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 4px 4px 0px #333;
-            flex: 1;
+            transition: all 0.1s ease;
+            box-shadow: 4px 4px 0px #000;
         }
 
-        button:active:not(:disabled) {
+        button.main-btn:active:not(:disabled) {
             transform: translate(2px, 2px);
-            box-shadow: 2px 2px 0px #333;
+            box-shadow: 2px 2px 0px #000;
         }
 
-        #initBtn { background-color: var(--btn-secondary); color: #333; }
-        #captureBtn { background-color: var(--btn-primary); color: white; }
-        #downloadBtn { background-color: var(--btn-accent); color: white; }
-
-        button:disabled {
-            background-color: #ddd !important;
-            color: #aaa !important;
+        #initBtn { background-color: var(--btn-blue); color: #fff; }
+        #captureBtn { background-color: var(--btn-pink); color: white; }
+        #downloadBtn { background-color: #00f5d4; color: #1e1e24; }
+        
+        button.main-btn:disabled {
+            background-color: #555 !important;
+            color: #888 !important;
             box-shadow: none;
             transform: none;
-            border-color: #bbb;
+            border-color: #444;
             cursor: not-allowed;
         }
 
-        /* Preview Kotak Frame */
+        /* MEMPERTAHANKAN TAMPILAN STRIP POLAROID ASLI (PUTIH BERSIH) */
         .photobooth-frame {
-            position: relative;
-            width: 240px;
-            aspect-ratio: 400 / 1000;
-            background-image: url('template.png'); /* Pastikan file template.png ada di folder yang sama */
-            background-size: 100% 100%;
-            background-repeat: no-repeat;
-            box-shadow: 8px 8px 0px #333;
-            border: 4px solid #333;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .slot-container {
-            position: absolute;
-            top: 3.5%;
-            left: 6.2%;
-            width: 87.6%;
-            height: 78.5%;
+            background-color: var(--frame-bg);
+            width: 220px;
+            padding: 15px 15px 55px 15px;
+            box-shadow: 8px 8px 0px var(--dark-retro);
+            border-radius: 2px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            gap: 12px;
+            align-items: center;
+            position: relative;
+            border: 1px solid #dcdde1;
         }
 
         .slot {
             width: 100%;
-            height: 23.2%;
-            background-color: rgba(255, 255, 255, 0.4);
+            aspect-ratio: 4/3;
+            background-color: #f1f2f6;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #444;
+            color: #a4b0be;
+            font-family: 'Segoe UI', sans-serif;
             font-size: 11px;
-            font-weight: bold;
             overflow: hidden;
+            border: 1px solid #f1f2f6;
         }
 
         .slot img {
@@ -206,37 +258,67 @@
             transform: scaleX(-1);
         }
 
+        /* Input Teks Cetak Polaroid */
+        .frame-footer-input {
+            position: absolute;
+            bottom: 15px;
+            width: calc(100% - 30px);
+            border: none;
+            background: transparent;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            color: #2f3542;
+            outline: none;
+            border-bottom: 1px dashed transparent;
+        }
+
+        .frame-footer-input:hover, .frame-footer-input:focus {
+            border-bottom: 1px dashed #ced6e0;
+        }
+
         canvas { display: none; }
     </style>
 </head>
 <body>
 
-    <h1>📸 GOOD VIBES PHOTOBOOTH 📸</h1>
+    <h1>⚡ VAPORWAVE PHOTOBOOTH ⚡</h1>
     
     <div class="container">
         <div class="camera-box">
             <div class="video-wrapper">
-                <video id="video" autoplay playsinline></video>
+                <video id="video" class="f-normal" autoplay playsinline></video>
                 <div class="flash-overlay" id="flash"></div>
             </div>
             <div id="timer"></div>
+
+            <div class="filter-selector">
+                <span class="filter-label">📟 FILTER MODE:</span>
+                <div class="filter-options">
+                    <button class="filter-btn active" onclick="setFilter('normal', this)">Normal</button>
+                    <button class="filter-btn" onclick="setFilter('bw', this)">B&W</button>
+                    <button class="filter-btn" onclick="setFilter('sepia', this)">Sepia</button>
+                    <button class="filter-btn" onclick="setFilter('vintage', this)">Vintage</button>
+                    <button class="filter-btn" onclick="setFilter('cyber', this)">Cyberpunk</button>
+                </div>
+            </div>
             
             <div class="controls">
-                <button id="initBtn">1. Nyalakan Kamera</button>
+                <button id="initBtn" class="main-btn">1. LOAD CAMERA</button>
                 <div class="btn-group">
-                    <button id="captureBtn" disabled>2. Mulai Sesi (3 Detik)</button>
-                    <button id="downloadBtn" disabled>3. Simpan Gambar</button>
+                    <button id="captureBtn" class="main-btn" disabled>2. START (3s)</button>
+                    <button id="downloadBtn" class="main-btn" disabled>3. SAVE STRIP</button>
                 </div>
             </div>
         </div>
 
         <div class="photobooth-frame" id="photoFrame">
-            <div class="slot-container">
-                <div class="slot" id="slot1">POSE 1</div>
-                <div class="slot" id="slot2">POSE 2</div>
-                <div class="slot" id="slot3">POSE 3</div>
-                <div class="slot" id="slot4">POSE 4</div>
-            </div>
+            <div class="slot" id="slot1">SLOT 1</div>
+            <div class="slot" id="slot2">SLOT 2</div>
+            <div class="slot" id="slot3">SLOT 3</div>
+            <div class="slot" id="slot4">SLOT 4</div>
+            <input type="text" class="frame-footer-input" id="footerText" value="RAD MEMORIES ✨" placeholder="Tulis catatan...">
         </div>
     </div>
 
@@ -250,6 +332,7 @@
         const captureBtn = document.getElementById('captureBtn');
         const downloadBtn = document.getElementById('downloadBtn');
         const flash = document.getElementById('flash');
+        const footerTextInput = document.getElementById('footerText');
         
         const slots = [
             document.getElementById('slot1'),
@@ -259,7 +342,17 @@
         ];
 
         let imgDataArray = [null, null, null, null];
+        let activeFilter = 'normal';
         const ctx = canvas.getContext('2d');
+
+        function setFilter(filterName, btn) {
+            video.className = ''; 
+            video.classList.add('f-' + filterName);
+            activeFilter = filterName;
+
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
 
         // Akses Kamera
         initBtn.addEventListener('click', async () => {
@@ -271,14 +364,14 @@
                 video.srcObject = stream;
                 captureBtn.disabled = false;
                 initBtn.disabled = true;
-                initBtn.innerText = "Kamera Aktif";
+                initBtn.innerText = "CAMERA ONLINE";
             } catch (err) {
-                alert("Gagal memuat kamera. Pastikan izin kamera diberikan.");
+                alert("Gagal mengakses kamera. Mohon izinkan akses kamera.");
                 console.error(err);
             }
         });
 
-        // Sesi Rangkaian Foto Otomatis (Ubah Timer Jadi 3 Detik)
+        // Sesi Foto Otomatis 3 Detik
         captureBtn.addEventListener('click', () => {
             captureBtn.disabled = true;
             downloadBtn.disabled = true;
@@ -287,7 +380,7 @@
             let currentSlot = 0;
             
             function startCountdown() {
-                let count = 3; // SEKARANG 3 DETIK
+                let count = 3;
                 timerDisplay.innerText = count;
                 
                 const interval = setInterval(() => {
@@ -298,7 +391,6 @@
                         clearInterval(interval);
                         timerDisplay.innerText = "";
                         
-                        // Efek Flash
                         flash.classList.add('flash-effect');
                         setTimeout(() => flash.classList.remove('flash-effect'), 400);
 
@@ -306,10 +398,10 @@
                         
                         currentSlot++;
                         if (currentSlot < 4) {
-                            setTimeout(startCountdown, 1000); // Jeda sebelum hitung mundur slot berikutnya
+                            setTimeout(startCountdown, 1000);
                         } else {
                             setTimeout(() => {
-                                timerDisplay.innerText = "FINISH!";
+                                timerDisplay.innerText = "SUCCESS!";
                                 setTimeout(() => timerDisplay.innerText = "", 1500);
                                 captureBtn.disabled = false;
                                 downloadBtn.disabled = false;
@@ -325,86 +417,107 @@
         function takeSnapshot(slotIndex) {
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            applyFilterToCanvas(ctx);
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
             
             const imgUrl = canvas.toDataURL('image/jpeg');
             imgDataArray[slotIndex] = imgUrl;
-            slots[slotIndex].innerHTML = `<img src="${imgUrl}" alt="Foto ${slotIndex + 1}">`;
+            
+            slots[slotIndex].innerHTML = `<img src="${imgUrl}" class="f-${activeFilter}" alt="Foto ${slotIndex + 1}">`;
+        }
+
+        function applyFilterToCanvas(context) {
+            if (activeFilter === 'bw') context.filter = 'grayscale(100%) contrast(120%)';
+            else if (activeFilter === 'sepia') context.filter = 'sepia(100%) hue-rotate(-30deg)';
+            else if (activeFilter === 'vintage') context.filter = 'sepia(30%) contrast(130%) saturate(140%)';
+            else if (activeFilter === 'cyber') context.filter = 'hue-rotate(140deg) saturate(180%) contrast(120%)';
+            else context.filter = 'none';
         }
 
         function clearSlots() {
-            slots.forEach((slot, index) => { slot.innerHTML = `POSE ${index + 1}`; });
+            slots.forEach((slot, index) => { slot.innerHTML = `SLOT ${index + 1}`; });
             imgDataArray = [null, null, null, null];
         }
 
-        // Proses Penyusunan Gambar Akhir
+        // Menggabungkan Menjadi Cetakan Polaroid Putih Bersih
         downloadBtn.addEventListener('click', () => {
-            const templateImg = new Image();
+            const finalWidth = 450;
+            const padding = 25;
+            const gap = 20;
+            const photoWidth = finalWidth - (padding * 2);
+            const photoHeight = photoWidth * (3/4); 
+            const bottomSpace = 85; 
             
-            // Mengizinkan canvas mengunduh gambar lintas origin jika ditaruh di server online
-            templateImg.crossOrigin = 'anonymous'; 
+            const finalHeight = (padding * 2) + (photoHeight * 4) + (gap * 3) + bottomSpace;
             
-            // Sumber gambar template kamu
-            templateImg.src = 'template.png'; 
-            
-            templateImg.onload = () => {
-                const finalWidth = templateImg.naturalWidth || 400;
-                const finalHeight = templateImg.naturalHeight || 1000;
+            canvas.width = finalWidth;
+            canvas.height = finalHeight;
+
+            ctx.filter = 'none';
+            ctx.fillStyle = "#ffffff"; /* Kertas polaroid putih dipertahankan */
+            ctx.fillRect(0, 0, finalWidth, finalHeight);
+
+            ctx.strokeStyle = "#e4e4e4";
+            ctx.lineWidth = 2;
+            ctx.strokeRect(1, 1, finalWidth - 2, finalHeight - 2);
+
+            let loadedImages = 0;
+
+            imgDataArray.forEach((dataUrl, index) => {
+                if (!dataUrl) return;
                 
-                canvas.width = finalWidth;
-                canvas.height = finalHeight;
-
-                // 1. Gambar Template Background
-                ctx.drawImage(templateImg, 0, 0, finalWidth, finalHeight);
-
-                // Koordinat Presisi Posisi Slot Foto
-                const slotX = finalWidth * 0.062;
-                const totalSlotHeightArea = finalHeight * 0.785;
-                const photoWidth = finalWidth * 0.876;
-                const photoHeight = totalSlotHeightArea * 0.232;
-                const gap = (totalSlotHeightArea - (photoHeight * 4)) / 3;
-                const startY = finalHeight * 0.035;
-
-                let loadedImages = 0;
-
-                imgDataArray.forEach((dataUrl, index) => {
-                    if (!dataUrl) return;
+                const img = new Image();
+                img.src = dataUrl;
+                img.onload = () => {
+                    const yPos = padding + (index * (photoHeight + gap));
                     
-                    const img = new Image();
-                    img.src = dataUrl;
-                    img.onload = () => {
-                        const yPos = startY + (index * (photoHeight + gap));
-                        
-                        ctx.save();
-                        ctx.translate(slotX + photoWidth, yPos);
-                        ctx.scale(-1, 1); // Efek mirror agar hasil cetak natural
-                        ctx.drawImage(img, 0, 0, photoWidth, photoHeight);
-                        ctx.restore();
-                        
-                        loadedImages++;
-                        if (loadedImages === 4) {
-                            triggerDownload();
-                        }
-                    };
-                });
-            };
+                    ctx.save();
+                    ctx.translate(padding + photoWidth, yPos);
+                    ctx.scale(-1, 1); // Efek Cermin
+                    
+                    applyFilterToCanvas(ctx);
+                    
+                    const targetRatio = photoWidth / photoHeight;
+                    let sX = 0, sY = 0, sWidth = img.width, sHeight = img.height;
 
-            templateImg.onerror = () => {
-                alert("Gagal memuat 'template.png'. Pastikan nama file sesuai dan tidak dibuka langsung menggunakan file:/// di browser tanpa server lokal (Gunakan ekstensi Live Server).");
-            };
+                    if (img.width / img.height > targetRatio) {
+                        sWidth = img.height * targetRatio;
+                        sX = (img.width - sWidth) / 2;
+                    } else {
+                        sHeight = img.width / targetRatio;
+                        sY = (img.height - sHeight) / 2;
+                    }
+
+                    ctx.drawImage(img, sX, sY, sWidth, sHeight, 0, 0, photoWidth, photoHeight);
+                    ctx.restore();
+
+                    ctx.filter = 'none';
+                    ctx.strokeStyle = "#f1f2f6";
+                    ctx.lineWidth = 2;
+                    ctx.strokeRect(padding, yPos, photoWidth, photoHeight);
+                    
+                    loadedImages++;
+                    
+                    if (loadedImages === 4) {
+                        ctx.fillStyle = "#2f3542";
+                        ctx.font = "bold 22px 'Courier New', Courier, monospace";
+                        ctx.textAlign = "center";
+                        ctx.fillText(footerTextInput.value, finalWidth / 2, finalHeight - 35);
+
+                        triggerDownload();
+                    }
+                };
+            });
         });
 
         function triggerDownload() {
-            try {
-                const finalDataUrl = canvas.toDataURL('image/jpeg', 0.95);
-                const link = document.createElement('a');
-                link.download = 'goodvibes-photostrip-' + Date.now() + '.jpg';
-                link.href = finalDataUrl;
-                link.click();
-            } catch (e) {
-                alert("Gagal menyimpan gambar karena pembatasan keamanan (CORS) browser. Solusi: Jalankan file ini menggunakan 'Live Server' di VS Code atau upload ke hosting gratis.");
-                console.error(e);
-            }
+            const finalDataUrl = canvas.toDataURL('image/jpeg', 0.95);
+            const link = document.createElement('a');
+            link.download = 'vapor-polaroid-' + Date.now() + '.jpg';
+            link.href = finalDataUrl;
+            link.click();
         }
     </script>
 </body>
