@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Earth Tone Polaroid Photobooth</title>
+    <title>Photobooth</title>
     <style>
         /* ========================================================
            TEMA WARNA EARTH TONE (WARNA ALAM ESTETIK)
@@ -298,7 +298,7 @@
 </head>
 <body>
 
-    <h1>🌿 WARM EARTH PHOTOBOOTH 🌿</h1>
+    <h1>🌿 PHOTOBOOTH 🌿</h1>
     
     <div class="container">
         <div class="camera-box">
@@ -320,7 +320,7 @@
             </div>
             
             <div class="controls">
-                <button id="initBtn" class="main-btn">1. Hubungkan Kamera</button>
+                <button id="initBtn" class="main-btn">1. Aktifkan Kamera</button>
                 <div class="btn-group">
                     <button id="captureBtn" class="main-btn" disabled>2. Ambil Foto (3s)</button>
                     <button id="downloadBtn" class="main-btn" disabled>3. Simpan Gambar</button>
@@ -333,7 +333,7 @@
             <div class="slot" id="slot2">POSE 2</div>
             <div class="slot" id="slot3">POSE 3</div>
             <div class="slot" id="slot4">POSE 4</div>
-            <input type="text" class="frame-footer-input" id="footerText" value="NATURE VIBES 🤎" placeholder="Tulis memo di sini...">
+            <input type="text" class="frame-footer-input" id="footerText" value="🤎 MEMORIES 🤎" placeholder="Tulis memo di sini...">
         </div>
     </div>
 
@@ -534,7 +534,7 @@
         function triggerDownload() {
             const finalDataUrl = canvas.toDataURL('image/jpeg', 0.95);
             const link = document.createElement('a');
-            link.download = 'earthtone-polaroid-' + Date.now() + '.jpg';
+            link.download = 'salmon-polaroid-' + Date.now() + '.jpg';
             link.href = finalDataUrl;
             link.click();
         }
