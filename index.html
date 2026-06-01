@@ -2,18 +2,18 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Retro Pink Blue Photobooth</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Earth Tone Polaroid Photobooth</title>
     <style>
         /* ========================================================
-           TEMA WARNA RETRO BIRU PINK (VAPORWAVE / Y2K AESTHETIC)
+           TEMA WARNA EARTH TONE (WARNA ALAM ESTETIK)
            ======================================================== */
         :root {
-            --bg-gradient: linear-gradient(135deg, #00f5d4 0%, #00bbf9 40%, #ff007f 100%);
-            --btn-pink: #ff007f;
-            --btn-blue: #00bbf9;
-            --dark-retro: #1e1e24;
-            --frame-bg: #ffffff; /* Tetap putih mempertahankan ala polaroid */
+            --earth-terracotta: #b85d43; /* Cokelat kemerahan / terakota */
+            --earth-sage: #708266;       /* Hijau daun sage */
+            --earth-wood: #4a3b32;       /* Cokelat tua kayu */
+            --earth-sand: #f4f0ea;       /* Krem pasir lembut */
+            --frame-bg: #ffffff;         /* Tetap putih mempertahankan ala polaroid */
         }
 
         * {
@@ -23,52 +23,64 @@
         }
 
         body {
-            font-family: 'Impact', 'Arial Black', 'Poppins', sans-serif;
-            background: var(--bg-gradient);
+            font-family: 'Poppins', 'Segoe UI', system-ui, sans-serif;
+            background-image: url('banner.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
-            color: #fff;
+            padding: 12px;
+            color: var(--earth-wood);
+            overflow-x: hidden;
         }
 
         h1 {
             color: #fff;
-            text-shadow: 4px 4px 0px var(--btn-pink), -2px -2px 0px var(--btn-blue);
-            margin-bottom: 25px;
-            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(74, 59, 50, 0.6);
+            margin: 15px 0 25px 0;
+            font-size: 1.8rem;
             text-align: center;
-            letter-spacing: 2px;
-            font-style: italic;
+            letter-spacing: 1px;
+            font-weight: 700;
+            width: 100%;
         }
 
+        @media (min-width: 480px) {
+            h1 { font-size: 2.3rem; }
+        }
+
+        /* Layout Utama Kontainer (Responsif Vertikal di HP, Grid di PC) */
         .container {
-            display: grid;
-            grid-template-columns: 1fr;
+            display: flex;
+            flex-direction: column;
             gap: 25px;
             width: 100%;
             max-width: 850px;
-            justify-items: center;
-            align-items: start;
+            align-items: center;
         }
 
         @media (min-width: 768px) {
             .container {
+                display: grid;
                 grid-template-columns: 1.2fr 0.8fr;
                 gap: 40px;
+                align-items: start;
             }
         }
 
-        /* Area Kamera & Kontrol Retro */
+        /* Kotak Kamera Bertema Warm Earth */
         .camera-box {
-            background: rgba(30, 30, 36, 0.9);
-            border: 4px solid #fff;
-            border-radius: 0px; /* Sudut tajam khas retro PC */
+            background: rgba(244, 240, 234, 0.95); /* Dasar krem lembut */
+            border: 1px solid rgba(74, 59, 50, 0.15);
+            border-radius: 16px;
             padding: 20px;
             width: 100%;
             max-width: 440px;
-            box-shadow: 10px 10px 0px var(--btn-pink);
+            box-shadow: 0 10px 30px rgba(74, 59, 50, 0.15);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -79,9 +91,10 @@
             width: 100%;
             position: relative;
             aspect-ratio: 4/3;
-            background-color: #000;
-            border: 3px solid var(--btn-blue);
+            background-color: #2b2521;
+            border-radius: 10px;
             overflow: hidden;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.2);
         }
 
         #video {
@@ -92,23 +105,21 @@
             transition: filter 0.3s ease;
         }
 
-        /* Navigasi Pilihan Filter Warna Retro */
+        /* Panel Filter Warna */
         .filter-selector {
             width: 100%;
             margin: 15px 0 5px 0;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            font-family: 'Segoe UI', sans-serif;
+            gap: 6px;
         }
 
         .filter-label {
-            font-size: 13px;
-            font-weight: bold;
-            color: var(--btn-blue);
-            text-shadow: 1px 1px 0px #000;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--earth-wood);
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
         .filter-options {
@@ -116,46 +127,51 @@
             gap: 8px;
             overflow-x: auto;
             width: 100%;
-            padding-bottom: 5px;
+            padding-bottom: 6px;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .filter-options::-webkit-scrollbar {
+            display: none;
         }
 
         .filter-btn {
             padding: 6px 14px;
             font-size: 12px;
-            font-family: 'Segoe UI', sans-serif;
-            background: #2f2f38;
-            border: 2px solid var(--btn-blue);
-            color: #fff;
-            border-radius: 0px;
+            font-family: inherit;
+            background: #fff;
+            border: 1px solid #dcd6cd;
+            color: var(--earth-wood);
+            border-radius: 20px;
             cursor: pointer;
             white-space: nowrap;
             transition: all 0.2s ease;
         }
 
         .filter-btn.active {
-            background: var(--btn-pink);
-            border-color: #fff;
-            font-weight: bold;
-            box-shadow: 3px 3px 0px var(--btn-blue);
-            transform: translate(-2px, -2px);
+            background: var(--earth-sage); /* Aktif jadi Hijau Sage */
+            border-color: var(--earth-sage);
+            color: #fff;
+            font-weight: 600;
+            box-shadow: 0 4px 8px rgba(112, 130, 102, 0.3);
         }
 
-        /* Filter Efek Gambar */
+        /* Efek Filter Warna Hangat */
         .f-normal { filter: none; }
-        .f-bw { filter: grayscale(100%) contrast(120%); }
-        .f-sepia { filter: sepia(100%) hue-rotate(-30deg); }
-        .f-vintage { filter: sepia(30%) contrast(130%) saturate(140%); }
-        .f-cyber { filter: hue-rotate(140deg) saturate(180%) contrast(120%); }
+        .f-bw { filter: grayscale(100%) contrast(110%); }
+        .f-sepia { filter: sepia(70%) contrast(95%) warm; }
+        .f-vintage { filter: sepia(40%) saturate(110%) contrast(110%) brightness(95%); }
+        .f-cyber { filter: hue-rotate(60deg) saturate(130%) sepia(20%); }
 
         #timer {
             position: absolute;
-            top: 40%;
+            top: 38%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 90px;
-            font-weight: 900;
+            font-size: 80px;
+            font-weight: 800;
             color: #fff;
-            text-shadow: 4px 4px 0px var(--btn-pink);
+            text-shadow: 0 4px 12px rgba(74, 59, 50, 0.4);
             pointer-events: none;
             z-index: 10;
         }
@@ -176,79 +192,78 @@
             100% { background: rgba(255,255,255,0); }
         }
 
-        /* Desain Tombol-Tombol Blocky Retro */
+        /* Tombol Utama Estetik */
         .controls {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             width: 100%;
-            margin-top: 10px;
+            margin-top: 8px;
         }
 
         .btn-group {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             width: 100%;
         }
 
         button.main-btn {
             padding: 12px 15px;
-            font-size: 14px;
-            font-family: 'Impact', 'Arial Black', sans-serif;
-            letter-spacing: 1px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: inherit;
             text-transform: uppercase;
-            border: 3px solid #fff;
-            border-radius: 0px; /* Kotak kaku khas 90s game */
+            letter-spacing: 0.5px;
+            border: none;
+            border-radius: 10px;
             cursor: pointer;
-            transition: all 0.1s ease;
-            box-shadow: 4px 4px 0px #000;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px rgba(74, 59, 50, 0.1);
         }
 
         button.main-btn:active:not(:disabled) {
-            transform: translate(2px, 2px);
-            box-shadow: 2px 2px 0px #000;
+            transform: scale(0.97);
         }
 
-        #initBtn { background-color: var(--btn-blue); color: #fff; }
-        #captureBtn { background-color: var(--btn-pink); color: white; }
-        #downloadBtn { background-color: #00f5d4; color: #1e1e24; }
+        #initBtn { background-color: var(--earth-wood); color: #fff; }
+        #captureBtn { background-color: var(--earth-terracotta); color: white; }
+        #downloadBtn { background-color: var(--earth-sage); color: white; }
         
         button.main-btn:disabled {
-            background-color: #555 !important;
-            color: #888 !important;
+            background-color: #d2c9be !important;
+            color: #9c9184 !important;
             box-shadow: none;
             transform: none;
-            border-color: #444;
             cursor: not-allowed;
         }
 
-        /* MEMPERTAHANKAN TAMPILAN STRIP POLAROID ASLI (PUTIH BERSIH) */
+        /* STRIP POLAROID TETAP PUTIH BERSIH & MINIMALIS */
         .photobooth-frame {
             background-color: var(--frame-bg);
-            width: 220px;
+            width: 100%;
+            max-width: 230px; 
             padding: 15px 15px 55px 15px;
-            box-shadow: 8px 8px 0px var(--dark-retro);
-            border-radius: 2px;
+            box-shadow: 0 12px 35px rgba(74, 59, 50, 0.15);
+            border-radius: 4px;
             display: flex;
             flex-direction: column;
             gap: 12px;
             align-items: center;
             position: relative;
-            border: 1px solid #dcdde1;
+            border: 1px solid #e6e1da;
         }
 
         .slot {
             width: 100%;
             aspect-ratio: 4/3;
-            background-color: #f1f2f6;
+            background-color: #f7f5f2;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #a4b0be;
-            font-family: 'Segoe UI', sans-serif;
+            color: #bfae9c;
             font-size: 11px;
             overflow: hidden;
-            border: 1px solid #f1f2f6;
+            border: 1px solid #f1ece5;
         }
 
         .slot img {
@@ -258,7 +273,7 @@
             transform: scaleX(-1);
         }
 
-        /* Input Teks Cetak Polaroid */
+        /* Input Catatan Teks Bawah Polaroid */
         .frame-footer-input {
             position: absolute;
             bottom: 15px;
@@ -269,13 +284,13 @@
             font-size: 14px;
             font-weight: bold;
             text-align: center;
-            color: #2f3542;
+            color: var(--earth-wood);
             outline: none;
             border-bottom: 1px dashed transparent;
         }
 
         .frame-footer-input:hover, .frame-footer-input:focus {
-            border-bottom: 1px dashed #ced6e0;
+            border-bottom: 1px dashed #d2c9be;
         }
 
         canvas { display: none; }
@@ -283,7 +298,7 @@
 </head>
 <body>
 
-    <h1>⚡ VAPORWAVE PHOTOBOOTH ⚡</h1>
+    <h1>🌿 WARM EARTH PHOTOBOOTH 🌿</h1>
     
     <div class="container">
         <div class="camera-box">
@@ -294,31 +309,31 @@
             <div id="timer"></div>
 
             <div class="filter-selector">
-                <span class="filter-label">📟 FILTER MODE:</span>
+                <span class="filter-label">🍂 Filter Efek Foto:</span>
                 <div class="filter-options">
                     <button class="filter-btn active" onclick="setFilter('normal', this)">Normal</button>
-                    <button class="filter-btn" onclick="setFilter('bw', this)">B&W</button>
-                    <button class="filter-btn" onclick="setFilter('sepia', this)">Sepia</button>
-                    <button class="filter-btn" onclick="setFilter('vintage', this)">Vintage</button>
-                    <button class="filter-btn" onclick="setFilter('cyber', this)">Cyberpunk</button>
+                    <button class="filter-btn" onclick="setFilter('bw', this)">Muted B&W</button>
+                    <button class="filter-btn" onclick="setFilter('sepia', this)">Warm Sepia</button>
+                    <button class="filter-btn" onclick="setFilter('vintage', this)">Soft Vintage</button>
+                    <button class="filter-btn" onclick="setFilter('cyber', this)">Nature Fresh</button>
                 </div>
             </div>
             
             <div class="controls">
-                <button id="initBtn" class="main-btn">1. LOAD CAMERA</button>
+                <button id="initBtn" class="main-btn">1. Hubungkan Kamera</button>
                 <div class="btn-group">
-                    <button id="captureBtn" class="main-btn" disabled>2. START (3s)</button>
-                    <button id="downloadBtn" class="main-btn" disabled>3. SAVE STRIP</button>
+                    <button id="captureBtn" class="main-btn" disabled>2. Ambil Foto (3s)</button>
+                    <button id="downloadBtn" class="main-btn" disabled>3. Simpan Gambar</button>
                 </div>
             </div>
         </div>
 
         <div class="photobooth-frame" id="photoFrame">
-            <div class="slot" id="slot1">SLOT 1</div>
-            <div class="slot" id="slot2">SLOT 2</div>
-            <div class="slot" id="slot3">SLOT 3</div>
-            <div class="slot" id="slot4">SLOT 4</div>
-            <input type="text" class="frame-footer-input" id="footerText" value="RAD MEMORIES ✨" placeholder="Tulis catatan...">
+            <div class="slot" id="slot1">POSE 1</div>
+            <div class="slot" id="slot2">POSE 2</div>
+            <div class="slot" id="slot3">POSE 3</div>
+            <div class="slot" id="slot4">POSE 4</div>
+            <input type="text" class="frame-footer-input" id="footerText" value="NATURE VIBES 🤎" placeholder="Tulis memo di sini...">
         </div>
     </div>
 
@@ -358,20 +373,24 @@
         initBtn.addEventListener('click', async () => {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { width: 640, height: 480, facingMode: "user" }, 
+                    video: { 
+                        width: { ideal: 640 }, 
+                        height: { ideal: 480 }, 
+                        facingMode: "user" 
+                    }, 
                     audio: false 
                 });
                 video.srcObject = stream;
                 captureBtn.disabled = false;
                 initBtn.disabled = true;
-                initBtn.innerText = "CAMERA ONLINE";
+                initBtn.innerText = "Kamera Terhubung";
             } catch (err) {
-                alert("Gagal mengakses kamera. Mohon izinkan akses kamera.");
+                alert("Gagal memuat kamera. Pastikan izin kamera sudah diberikan di browser Anda.");
                 console.error(err);
             }
         });
 
-        // Sesi Foto Otomatis 3 Detik
+        // Sesi Rangkaian Foto (Timer 3 Detik)
         captureBtn.addEventListener('click', () => {
             captureBtn.disabled = true;
             downloadBtn.disabled = true;
@@ -401,7 +420,7 @@
                             setTimeout(startCountdown, 1000);
                         } else {
                             setTimeout(() => {
-                                timerDisplay.innerText = "SUCCESS!";
+                                timerDisplay.innerText = "FINISH!";
                                 setTimeout(() => timerDisplay.innerText = "", 1500);
                                 captureBtn.disabled = false;
                                 downloadBtn.disabled = false;
@@ -415,8 +434,8 @@
         });
 
         function takeSnapshot(slotIndex) {
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
+            canvas.width = video.videoWidth || 640;
+            canvas.height = video.videoHeight || 480;
             
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             applyFilterToCanvas(ctx);
@@ -429,19 +448,19 @@
         }
 
         function applyFilterToCanvas(context) {
-            if (activeFilter === 'bw') context.filter = 'grayscale(100%) contrast(120%)';
-            else if (activeFilter === 'sepia') context.filter = 'sepia(100%) hue-rotate(-30deg)';
-            else if (activeFilter === 'vintage') context.filter = 'sepia(30%) contrast(130%) saturate(140%)';
-            else if (activeFilter === 'cyber') context.filter = 'hue-rotate(140deg) saturate(180%) contrast(120%)';
+            if (activeFilter === 'bw') context.filter = 'grayscale(100%) contrast(110%)';
+            else if (activeFilter === 'sepia') context.filter = 'sepia(70%) contrast(95%)';
+            else if (activeFilter === 'vintage') context.filter = 'sepia(40%) saturate(110%) contrast(110%) brightness(95%)';
+            else if (activeFilter === 'cyber') context.filter = 'hue-rotate(60deg) saturate(130%) sepia(20%)';
             else context.filter = 'none';
         }
 
         function clearSlots() {
-            slots.forEach((slot, index) => { slot.innerHTML = `SLOT ${index + 1}`; });
+            slots.forEach((slot, index) => { slot.innerHTML = `POSE ${index + 1}`; });
             imgDataArray = [null, null, null, null];
         }
 
-        // Menggabungkan Menjadi Cetakan Polaroid Putih Bersih
+        // Menggabungkan Foto Menjadi Lembaran Strip Polaroid Putih Estetik (Anti-Gepeng)
         downloadBtn.addEventListener('click', () => {
             const finalWidth = 450;
             const padding = 25;
@@ -456,10 +475,10 @@
             canvas.height = finalHeight;
 
             ctx.filter = 'none';
-            ctx.fillStyle = "#ffffff"; /* Kertas polaroid putih dipertahankan */
+            ctx.fillStyle = "#ffffff"; 
             ctx.fillRect(0, 0, finalWidth, finalHeight);
 
-            ctx.strokeStyle = "#e4e4e4";
+            ctx.strokeStyle = "#e6e1da";
             ctx.lineWidth = 2;
             ctx.strokeRect(1, 1, finalWidth - 2, finalHeight - 2);
 
@@ -475,7 +494,7 @@
                     
                     ctx.save();
                     ctx.translate(padding + photoWidth, yPos);
-                    ctx.scale(-1, 1); // Efek Cermin
+                    ctx.scale(-1, 1); 
                     
                     applyFilterToCanvas(ctx);
                     
@@ -494,14 +513,14 @@
                     ctx.restore();
 
                     ctx.filter = 'none';
-                    ctx.strokeStyle = "#f1f2f6";
+                    ctx.strokeStyle = "#f7f5f2";
                     ctx.lineWidth = 2;
                     ctx.strokeRect(padding, yPos, photoWidth, photoHeight);
                     
                     loadedImages++;
                     
                     if (loadedImages === 4) {
-                        ctx.fillStyle = "#2f3542";
+                        ctx.fillStyle = "#4a3b32"; // Teks memo menggunakan warna kayu hangat
                         ctx.font = "bold 22px 'Courier New', Courier, monospace";
                         ctx.textAlign = "center";
                         ctx.fillText(footerTextInput.value, finalWidth / 2, finalHeight - 35);
@@ -515,7 +534,7 @@
         function triggerDownload() {
             const finalDataUrl = canvas.toDataURL('image/jpeg', 0.95);
             const link = document.createElement('a');
-            link.download = 'vapor-polaroid-' + Date.now() + '.jpg';
+            link.download = 'earthtone-polaroid-' + Date.now() + '.jpg';
             link.href = finalDataUrl;
             link.click();
         }
