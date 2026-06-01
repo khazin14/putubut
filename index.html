@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro 90's Photobooth (3s Timer)</title>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #ff9f43 0%, #ff5252 100%);
+            --btn-primary: #ff5252;
+            --btn-secondary: #feca57;
+            --btn-accent: #ff9f43;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            color: #333;
+        }
+
+        h1 {
+            color: #fff;
+            text-shadow: 3px 3px 0px #333;
+            margin: 15px 0;
+            font-size: 2rem;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            width: 100%;
+            max-width: 850px;
+            justify-items: center;
+            align-items: start;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: 1.2fr 0.8fr;
+                gap: 30px;
+            }
+        }
+
+        /* Kamera Box */
+        .camera-box {
+            background: rgba(255, 255, 255, 0.95);
+            border: 4px solid #333;
+            border-radius: 24px;
+            padding: 20px;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: 8px 8px 0px #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .video-wrapper {
+            width: 100%;
+            position: relative;
+            aspect-ratio: 4/3;
+            background-color: #222;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 3px solid #333;
+        }
+
+        #video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1);
+        }
+
+        #timer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 80px;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(0,0,0,0.6), 4px 4px 0px var(--btn-primary);
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .flash-overlay {
+            position: absolute;
+            top:0; left:0; width:100%; height:100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .flash-effect {
+            animation: flash 0.4s ease-out;
+        }
+
+        @keyframes flash {
+            0% { background: rgba(255,255,255,1); }
+            100% { background: rgba(255,255,255,0); }
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+        }
+
+        button {
+            padding: 12px 15px;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: 3px solid #333;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 4px 4px 0px #333;
+            flex: 1;
+        }
+
+        button:active:not(:disabled) {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px #333;
+        }
+
+        #initBtn { background-color: var(--btn-secondary); color: #333; }
+        #captureBtn { background-color: var(--btn-primary); color: white; }
+        #downloadBtn { background-color: var(--btn-accent); color: white; }
+
+        button:disabled {
+            background-color: #ddd !important;
+            color: #aaa !important;
+            box-shadow: none;
+            transform: none;
+            border-color: #bbb;
+            cursor: not-allowed;
+        }
+
+        /* Preview Kotak Frame */
+        .photobooth-frame {
+            position: relative;
+            width: 240px;
+            aspect-ratio: 400 / 1000;
+            background-image: url('template.png'); /* Pastikan file template.png ada di folder yang sama */
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            box-shadow: 8px 8px 0px #333;
+            border: 4px solid #333;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .slot-container {
+            position: absolute;
+            top: 3.5%;
+            left: 6.2%;
+            width: 87.6%;
+            height: 78.5%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .slot {
+            width: 100%;
+            height: 23.2%;
+            background-color: rgba(255, 255, 255, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #444;
+            font-size: 11px;
+            font-weight: bold;
+            overflow: hidden;
+        }
+
+        .slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1);
+        }
+
+        canvas { display: none; }
+    </style>
+</head>
+<body>
+
+    <h1>📸 GOOD VIBES PHOTOBOOTH 📸</h1>
+    
+    <div class="container">
+        <div class="camera-box">
+            <div class="video-wrapper">
+                <video id="video" autoplay playsinline></video>
+                <div class="flash-overlay" id="flash"></div>
+            </div>
+            <div id="timer"></div>
+            
+            <div class="controls">
+                <button id="initBtn">1. Nyalakan Kamera</button>
+                <div class="btn-group">
+                    <button id="captureBtn" disabled>2. Mulai Sesi (3 Detik)</button>
+                    <button id="downloadBtn" disabled>3. Simpan Gambar</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="photobooth-frame" id="photoFrame">
+            <div class="slot-container">
+                <div class="slot" id="slot1">POSE 1</div>
+                <div class="slot" id="slot2">POSE 2</div>
+                <div class="slot" id="slot3">POSE 3</div>
+                <div class="slot" id="slot4">POSE 4</div>
+            </div>
+        </div>
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const timerDisplay = document.getElementById('timer');
+        const initBtn = document.getElementById('initBtn');
+        const captureBtn = document.getElementById('captureBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const flash = document.getElementById('flash');
+        
+        const slots = [
+            document.getElementById('slot1'),
+            document.getElementById('slot2'),
+            document.getElementById('slot3'),
+            document.getElementById('slot4')
+        ];
+
+        let imgDataArray = [null, null, null, null];
+        const ctx = canvas.getContext('2d');
+
+        // Akses Kamera
+        initBtn.addEventListener('click', async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { width: 640, height: 480, facingMode: "user" }, 
+                    audio: false 
+                });
+                video.srcObject = stream;
+                captureBtn.disabled = false;
+                initBtn.disabled = true;
+                initBtn.innerText = "Kamera Aktif";
+            } catch (err) {
+                alert("Gagal memuat kamera. Pastikan izin kamera diberikan.");
+                console.error(err);
+            }
+        });
+
+        // Sesi Rangkaian Foto Otomatis (Ubah Timer Jadi 3 Detik)
+        captureBtn.addEventListener('click', () => {
+            captureBtn.disabled = true;
+            downloadBtn.disabled = true;
+            clearSlots();
+            
+            let currentSlot = 0;
+            
+            function startCountdown() {
+                let count = 3; // SEKARANG 3 DETIK
+                timerDisplay.innerText = count;
+                
+                const interval = setInterval(() => {
+                    count--;
+                    if (count > 0) {
+                        timerDisplay.innerText = count;
+                    } else {
+                        clearInterval(interval);
+                        timerDisplay.innerText = "";
+                        
+                        // Efek Flash
+                        flash.classList.add('flash-effect');
+                        setTimeout(() => flash.classList.remove('flash-effect'), 400);
+
+                        takeSnapshot(currentSlot);
+                        
+                        currentSlot++;
+                        if (currentSlot < 4) {
+                            setTimeout(startCountdown, 1000); // Jeda sebelum hitung mundur slot berikutnya
+                        } else {
+                            setTimeout(() => {
+                                timerDisplay.innerText = "FINISH!";
+                                setTimeout(() => timerDisplay.innerText = "", 1500);
+                                captureBtn.disabled = false;
+                                downloadBtn.disabled = false;
+                            }, 1000);
+                        }
+                    }
+                }, 1000);
+            }
+            
+            startCountdown();
+        });
+
+        function takeSnapshot(slotIndex) {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            const imgUrl = canvas.toDataURL('image/jpeg');
+            imgDataArray[slotIndex] = imgUrl;
+            slots[slotIndex].innerHTML = `<img src="${imgUrl}" alt="Foto ${slotIndex + 1}">`;
+        }
+
+        function clearSlots() {
+            slots.forEach((slot, index) => { slot.innerHTML = `POSE ${index + 1}`; });
+            imgDataArray = [null, null, null, null];
+        }
+
+        // Proses Penyusunan Gambar Akhir
+        downloadBtn.addEventListener('click', () => {
+            const templateImg = new Image();
+            
+            // Mengizinkan canvas mengunduh gambar lintas origin jika ditaruh di server online
+            templateImg.crossOrigin = 'anonymous'; 
+            
+            // Sumber gambar template kamu
+            templateImg.src = 'template.png'; 
+            
+            templateImg.onload = () => {
+                const finalWidth = templateImg.naturalWidth || 400;
+                const finalHeight = templateImg.naturalHeight || 1000;
+                
+                canvas.width = finalWidth;
+                canvas.height = finalHeight;
+
+                // 1. Gambar Template Background
+                ctx.drawImage(templateImg, 0, 0, finalWidth, finalHeight);
+
+                // Koordinat Presisi Posisi Slot Foto
+                const slotX = finalWidth * 0.062;
+                const totalSlotHeightArea = finalHeight * 0.785;
+                const photoWidth = finalWidth * 0.876;
+                const photoHeight = totalSlotHeightArea * 0.232;
+                const gap = (totalSlotHeightArea - (photoHeight * 4)) / 3;
+                const startY = finalHeight * 0.035;
+
+                let loadedImages = 0;
+
+                imgDataArray.forEach((dataUrl, index) => {
+                    if (!dataUrl) return;
+                    
+                    const img = new Image();
+                    img.src = dataUrl;
+                    img.onload = () => {
+                        const yPos = startY + (index * (photoHeight + gap));
+                        
+                        ctx.save();
+                        ctx.translate(slotX + photoWidth, yPos);
+                        ctx.scale(-1, 1); // Efek mirror agar hasil cetak natural
+                        ctx.drawImage(img, 0, 0, photoWidth, photoHeight);
+                        ctx.restore();
+                        
+                        loadedImages++;
+                        if (loadedImages === 4) {
+                            triggerDownload();
+                        }
+                    };
+                });
+            };
+
+            templateImg.onerror = () => {
+                alert("Gagal memuat 'template.png'. Pastikan nama file sesuai dan tidak dibuka langsung menggunakan file:/// di browser tanpa server lokal (Gunakan ekstensi Live Server).");
+            };
+        });
+
+        function triggerDownload() {
+            try {
+                const finalDataUrl = canvas.toDataURL('image/jpeg', 0.95);
+                const link = document.createElement('a');
+                link.download = 'goodvibes-photostrip-' + Date.now() + '.jpg';
+                link.href = finalDataUrl;
+                link.click();
+            } catch (e) {
+                alert("Gagal menyimpan gambar karena pembatasan keamanan (CORS) browser. Solusi: Jalankan file ini menggunakan 'Live Server' di VS Code atau upload ke hosting gratis.");
+                console.error(e);
+            }
+        }
+    </script>
+</body>
+</html>
